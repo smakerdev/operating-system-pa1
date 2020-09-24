@@ -1,6 +1,6 @@
 ## Project #1: My Awesome Shell
 
-### *** Due on 11:59:59pm, September 16 (Friday)***
+### *** Due on 11:59:59pm, October 16 (Friday)***
 
 ### Goal
 With the system calls learned in the class and a few additional ones, you are ready to manipulate processes in the system.
@@ -208,9 +208,9 @@ For example, if `PATH=/usr/bin:./bin:./sce213`, the operating system looks up th
 
 - Use [PAsubmit](https://sslab.ajou.ac.kr/pasubmit) for submission
 	- 280 pts in total
-- Source: mash.c (250 pts in total)
+- Source: ***mash.c*** (250 pts in total)
   - Points will be prorated by testcase results.
-- Document: *One PDF* document (20 pts). It SHOULD include followings;
+- Document: ***One PDF document*** (20 pts). It SHOULD include followings;
   - Outline how programs are launched and how arguments are passed
   - How the timed-out feature is implemented
   - How the `for` built-in command is implemented
