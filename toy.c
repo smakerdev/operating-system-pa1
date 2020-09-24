@@ -23,6 +23,8 @@
 
 int main(int argc, const char *argv[])
 {
+	alarm(0);
+
 	fprintf(stderr, "pid  = %d\n", getpid());
 	fprintf(stderr, "argc = %d\n", argc);
 
