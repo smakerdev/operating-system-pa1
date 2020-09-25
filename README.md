@@ -112,7 +112,7 @@ For example, if `PATH=/usr/bin:./bin:./sce213`, the operating system looks up th
 - Let the shell detect non-finishing programs and terminiate them. Let `timeout` built-in command set the desired time out specified in seconds (2 by default) or print out the current time-out value. When the executing program does not finish within the specified period, `mash` should terminate the program by sending a `SIGKILL` signal to it. When the timeout is set to 0, disable this timed-out feature.
 - ```
   $ timeout
-  Current timeout is 0 second
+  Current timeout is 2 second
   $ timeout 10
   Timeout is set to 10 seconds
   $ sleep 5
@@ -133,23 +133,23 @@ For example, if `PATH=/usr/bin:./bin:./sce213`, the operating system looks up th
   fprintf(stderr, "%s is timed out\n", name);
   ```
 
-- You can use the `toy` for your testing as well. It will sleep for `@N` seconds if you run it with `sleep @N` as its arguments.
+- You can use the `toy` for your testing as well. It will sleep for `@N` seconds if you run it with `zzz @N` as its arguments.
 - ```bash
-  $ ./toy sleep 10
+  $ ./toy zzz 10
   pid  = xxxxxx
   argc = 3
   argv[0] = ./toy
-  argv[1] = sleep
+  argv[1] = zzz
   argv[2] = 10
   ( ... toy will sleep for 10 seconds ... )
   done!     # This output means the toy finished execution properly.
   $ timeout 5
   Timeout is set to 5 seconds
-  $ ./toy sleep 10
+  $ ./toy zzz 10
   pid  = xxxxxx
   argc = 3
   argv[0] = ./toy
-  argv[1] = sleep
+  argv[1] = zzz
   argv[2] = 10
   ...
   ( ... after 10 seconds ...)
