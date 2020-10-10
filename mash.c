@@ -70,6 +70,12 @@ static int run_command(int nr_tokens, char *tokens[])
 		return 0;
 	}
 
+	if (strncmp(tokens[0], "prompt", strlen("prompt")) == 0) {
+		// TODO: strncpy() 하고 나서 배열 끝을 '\0'으로 해줘야 하는 건가
+		strncpy(__prompt, tokens[1], strlen(tokens[1]));
+		return 1;
+	}
+
 	/*
 	fork();
 	exec();
