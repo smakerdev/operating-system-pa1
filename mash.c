@@ -76,6 +76,18 @@ static int run_command(int nr_tokens, char *tokens[])
 		return 1;
 	}
 
+	if (strncmp(tokens[0], "for", strlen("for")) == 0) {
+		return 1;
+	}
+
+	if (strncmp(tokens[0], "timeout", strlen("timeout")) == 0) {
+
+	}
+
+	if (strncmp(tokens[0], "cd", strlen("cd")) == 0) {
+
+	}
+
 	/*
 	fork();
 	exec();
