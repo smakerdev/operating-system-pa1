@@ -71,8 +71,11 @@ static int run_command(int nr_tokens, char *tokens[])
 	}
 
 	if (strncmp(tokens[0], "prompt", strlen("prompt")) == 0) {
-		// TODO: strncpy() 하고 나서 배열 끝을 '\0'으로 해줘야 하는 건가
+		int length = sizeof(tokens[0]);
+
 		strncpy(__prompt, tokens[1], strlen(tokens[1]));
+		__prompt[length] = '\0';
+
 		return 1;
 	}
 
@@ -81,7 +84,7 @@ static int run_command(int nr_tokens, char *tokens[])
 	}
 
 	if (strncmp(tokens[0], "timeout", strlen("timeout")) == 0) {
-
+		
 	}
 
 	if (strncmp(tokens[0], "cd", strlen("cd")) == 0) {
