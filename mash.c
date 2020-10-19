@@ -109,6 +109,8 @@ static int run_command(int nr_tokens, char *tokens[])
 			set_timeout(__timeout);
 			status = true;
 		}
+		
+		return 1;
 	}
 
 	if (strncmp(tokens[0], "cd", strlen("cd")) == 0) {
@@ -123,7 +125,7 @@ static int run_command(int nr_tokens, char *tokens[])
 	pid = fork();
 
 	if (pid == -1) {
-		fprintf(stderr, "No such file or directory\n");
+		// printf(stderr, "No such file or directory\n");
 		return -1;
 	} else if (pid == 0) {
 		int value = execvp(tokens[0], tokens);
