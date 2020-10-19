@@ -95,7 +95,7 @@ static int run_command(int nr_tokens, char *tokens[])
 		int count = atoi(tokens[1]);
 
 		for (int i = 0; i < count; i++)
-			run_command(atoi(tokens[0]) - 2, tokens + 2);
+			run_command(nr_tokens - 2, tokens + 2);
 
 		return 1;
 	}
