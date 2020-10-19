@@ -65,30 +65,61 @@ static void set_timeout(unsigned int timeout)
 static int run_command(int nr_tokens, char *tokens[])
 {
 	/* This function is all yours. Good luck! */
+	bool status;
+	pid_t pid;
 
 	if (strncmp(tokens[0], "exit", strlen("exit")) == 0) {
 		return 0;
 	}
 
 	if (strncmp(tokens[0], "prompt", strlen("prompt")) == 0) {
-		int length = sizeof(tokens[0]);
-
-		strncpy(__prompt, tokens[1], strlen(tokens[1]));
-		__prompt[length] = '\0';
-
+		strcpy(__prompt, tokens[1]);
 		return 1;
 	}
 
 	if (strncmp(tokens[0], "for", strlen("for")) == 0) {
+		int count = atoi(tokens[1]);
+
+		for (int i = 0; i < count; i++)
+			run_command(atoi(tokens[0]) - 2, tokens + 2);
+
 		return 1;
 	}
 
 	if (strncmp(tokens[0], "timeout", strlen("timeout")) == 0) {
+		if (tokens[1] == NULL)
+			fprintf(stderr, "Current timeout is %d second\n", __timeout);
 		
+		else {
+			__timeout = atoi(tokens[1]);
+			set_timeout(__timeout);
+			status = true;
+		}
 	}
 
 	if (strncmp(tokens[0], "cd", strlen("cd")) == 0) {
 
+	}
+
+	pid = fork();
+
+	if (pid == -1) {
+		fprintf(stderr, "No such file or directory\n");
+		return -1;
+	} else if (pid == 0) {
+		int value = execvp(tokens[0], tokens);
+
+		if (value < 0) {
+			fprintf(stderr, "No such file or directory\n");
+			abort();
+		}
+	} else {
+		waitpid(pid, NULL, 0);
+		kill(pid, SIGKILL);
+
+		if (status)
+			alarm(__timeout);
+		return 1;
 	}
 
 	/*
