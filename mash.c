@@ -20,6 +20,9 @@
 #include <signal.h>
 #include "types.h"
 #include "parser.h"
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 /*======================================================================*/
 /*          ****** DO NOT MODIFY ANYTHING FROM THIS LINE ******         */
@@ -48,7 +51,13 @@ static void set_timeout(unsigned int timeout)
 }
 /*          ****** DO NOT MODIFY ANYTHING UP TO THIS LINE ******      */
 /*====================================================================*/
+char *command_name;
+pid_t pid;
 
+static void handler(int sig_number) {
+	fprintf(stderr, "%s is timed out\n", command_name);
+	kill(pid, SIGKILL);
+}
 
 /***********************************************************************
  * run_command()
@@ -66,7 +75,12 @@ static int run_command(int nr_tokens, char *tokens[])
 {
 	/* This function is all yours. Good luck! */
 	bool status;
-	pid_t pid;
+
+	struct sigaction act;
+	act.sa_handler = handler;
+	act.sa_flags = 0;
+
+	sigaction(SIGALRM, &act, NULL);
 
 	if (strncmp(tokens[0], "exit", strlen("exit")) == 0) {
 		return 0;
@@ -88,7 +102,7 @@ static int run_command(int nr_tokens, char *tokens[])
 
 	if (strncmp(tokens[0], "timeout", strlen("timeout")) == 0) {
 		if (tokens[1] == NULL)
-			fprintf(stderr, "Current timeout is %d second\n", __timeout);
+			printf("Current timeout is %d second\n", __timeout);
 		
 		else {
 			__timeout = atoi(tokens[1]);
@@ -98,9 +112,14 @@ static int run_command(int nr_tokens, char *tokens[])
 	}
 
 	if (strncmp(tokens[0], "cd", strlen("cd")) == 0) {
-
+		if (nr_tokens == 1 || !strncmp(tokens[1], "~", strlen("~")))
+			chdir(getenv("HOME"));
+		
+		chdir(tokens[1]);
+		return 1;
 	}
 
+	command_name = tokens[0];
 	pid = fork();
 
 	if (pid == -1) {
@@ -113,13 +132,12 @@ static int run_command(int nr_tokens, char *tokens[])
 			fprintf(stderr, "No such file or directory\n");
 			abort();
 		}
+		
+		return 0;
 	} else {
-		waitpid(pid, NULL, 0);
-		kill(pid, SIGKILL);
-
 		if (status)
 			alarm(__timeout);
-		return 1;
+		waitpid(pid, NULL, 0);
 	}
 
 	/*
